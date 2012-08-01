@@ -1,0 +1,16 @@
+--------------------------------------------------------------------------------
+--	Inc!dent (c) 2012 by Siarkowy
+--	Released under the terms of GNU GPL v3 license.
+--------------------------------------------------------------------------------
+
+0.4
+	* Fixes to filtering.
+
+0.3
+	* Changed the way of how event filtering works.
+
+0.2
+	* Event filtering added.
+
+0.1
+	* Initial version.
