@@ -3,6 +3,9 @@
 --	Released under the terms of GNU GPL v3 license.
 --------------------------------------------------------------------------------
 
+0.4.1
+	* Renaming addon folder.
+
 0.4
 	* Fixes to filtering.
 
