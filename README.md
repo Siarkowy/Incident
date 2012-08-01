@@ -1,0 +1,4 @@
+Incident
+========
+
+Compact event dumper.
