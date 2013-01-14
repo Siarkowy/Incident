@@ -1,6 +1,0 @@
-## Interface: 20400
-## Title: Inc!dent
-## Notes: Compact event dumper.
-## Author: Siarkowy
-## Version: 0.4.1
-Incident.lua

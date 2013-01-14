@@ -1,0 +1,8 @@
+## Interface: 20400
+## Title: Incident
+## Notes: Compact event dumper. Usage: /!
+## Author: Siarkowy
+## Version: 0.5
+
+core.lua
+slash.lua

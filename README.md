@@ -1,4 +1,4 @@
 Incident
 ========
 
-Compact event dumper.
+Compact event dumper. Usage: /! [Wow 2.4.3]
