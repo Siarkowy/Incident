@@ -33,10 +33,9 @@ end
 
 Incident:SetScript("OnEvent", function(self, event, ...)
     if suspend then return end
+    if filter and not strjoin("\007", tostringall(event, ...)):lower():match(filter) then return end
+    self:Dump(event, ...)
     if self[event] and self[event](self, ...) then return end
-    if not filter or strjoin("\007", tostringall(event, ...)):lower():match(filter) then
-        self:Dump(event, ...)
-    end
 end)
 
 function Incident:Print(...) DEFAULT_CHAT_FRAME:AddMessage("|cFF56A3FFIncident:|r " .. format(...)) end
