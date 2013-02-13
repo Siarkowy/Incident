@@ -17,7 +17,7 @@ local suspend
 
 local formats = {
     ["boolean"]     = "|cFFFF9100%s|r",
-    ["function"]    = "func",
+    ["function"]    = "|cFFFFA500%s|r",
     ["nil"]         = "|cFFFF7F7Fnil|r",
     ["number"]      = "|cFFFF7FFF%d|r",
     ["string"]      = "|cFF00FF00%q|r",
@@ -30,6 +30,8 @@ local function tostringall(x, ...)
     if select('#', ...) > 0 then return tostring(x), tostringall(...)
     else return tostring(x) end
 end
+
+Incident.tostringall = tostringall
 
 Incident:SetScript("OnEvent", function(self, event, ...)
     if suspend then return end
@@ -57,11 +59,11 @@ function Incident:Dump(...)
             end)
         end
 
-        tinsert(params, i .. ':' .. formats[t]:format(val))
+        tinsert(params, format("%d:" .. formats[t], i, tostring(val)))
     end
 
     -- print to frame
-    output:AddMessage(strjoin("; ", unpack(params)))
+    output:AddMessage(strjoin(", ", unpack(params)))
 
     -- clear params
     for k, v in pairs(params) do params[k] = nil end
