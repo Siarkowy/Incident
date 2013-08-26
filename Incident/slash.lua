@@ -34,6 +34,14 @@ function Incident:OnSlashCmd(msg)
     elseif cmd == "toggle" then
         self:Print(self:ToggleSuspend() and "Suspended." or "Enabled.")
 
+    elseif cmd == "start" then
+        self:StartCapture(param ~= "" and param)
+        self:Print("Capture started.")
+
+    elseif cmd == "stop" then
+        self:StopCapture()
+        self:Print("Capture stopped.")
+
     elseif cmd == "" or cmd == "help" then
         self:Print("Usage: /! { +<event> || -<event> || +all || -all || filter <string> || output <no> || toggle }")
         self:Echo("   +<event> - Registers <event>.")

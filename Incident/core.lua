@@ -10,8 +10,10 @@ Incident.author     = GetAddOnMetadata("Incident", "Author")
 Incident.version    = GetAddOnMetadata("Incident", "Version")
 
 local byte          = string.byte
+local capture
+local captures      = { }
 local filter
-local output        = ChatFrame1
+local output        = ChatFrame3
 local params        = { }
 local suspend
 
@@ -33,18 +35,21 @@ end
 
 Incident.tostringall = tostringall
 
-Incident:SetScript("OnEvent", function(self, event, ...)
-    if suspend then return end
-    if filter and not strjoin("\007", tostringall(event, ...)):lower():match(filter) then return end
-    self:Dump(event, ...)
-    if self[event] and self[event](self, ...) then return end
-end)
-
 function Incident:Print(...) DEFAULT_CHAT_FRAME:AddMessage("|cFF56A3FFIncident:|r " .. format(...)) end
 function Incident:Echo(...) DEFAULT_CHAT_FRAME:AddMessage(format(...)) end
 function Incident:Filter(val) filter = val end
 function Incident:SetOutput(frame) output = frame end
 function Incident:ToggleSuspend() suspend = not suspend return suspend end
+
+function Incident:StartCapture(name)
+    local name = name ~= "" and name or date("%x %X")
+    IncDB[name] = IncDB[name] or { }
+    capture = IncDB[name]
+end
+
+function Incident:StopCapture()
+    capture = nil
+end
 
 function Incident:Dump(...)
     for i = 1, select("#", ...) do
@@ -74,4 +79,20 @@ dump   = dump   or function(...) Incident:Dump(...) end
 print  = print  or function(...) DEFAULT_CHAT_FRAME:AddMessage(...) end
 printf = printf or function(...) DEFAULT_CHAT_FRAME:AddMessage(format(...)) end
 
-Incident:Print("Version %s loaded." , Incident.version)
+function Incident:OnEvent(event, ...)
+    if suspend then return end
+    if filter and not strjoin("\007", tostringall(event, ...)):lower():match(filter) then return end
+    self:Dump(event, ...)
+    if capture then tinsert(capture, strjoin("\007", tostringall(time() + GetTime() % 1, event, ...))) end
+    if self[event] then self[event](self, ...) end
+end
+
+function Incident:ADDON_LOADED()
+    self:UnregisterEvent("ADDON_LOADED")
+    IncDB = IncDB or {}
+    self:SetScript("OnEvent", self.OnEvent)
+    self:Print("Version %s loaded." , Incident.version)
+end
+
+Incident:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
+Incident:RegisterEvent("ADDON_LOADED")
