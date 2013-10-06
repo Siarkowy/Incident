@@ -4,12 +4,20 @@
 --------------------------------------------------------------------------------
 
 local Incident = CreateFrame("frame", "Incident")
+Incident.name = "Incident"
+Incident.author = GetAddOnMetadata("Incident", "Author")
+Incident.version = GetAddOnMetadata("Incident", "Version")
 
-Incident.name       = "Incident"
-Incident.author     = GetAddOnMetadata("Incident", "Author")
-Incident.version    = GetAddOnMetadata("Incident", "Version")
+local byte = string.byte
+local format = format
+local pairs = pairs
+local select = select
+local time = time
+local tinsert = tinsert
+local tostring = tostring
+local type = type
+local unpack = unpack
 
-local byte          = string.byte
 local capture
 local captures      = { }
 local filter
@@ -27,6 +35,18 @@ local formats = {
     ["thread"]      = "thread",
     ["userdata"]    = "udata",
 }
+
+local function multimatch(patterns, ...)
+    for pattern in patterns:gmatch("[^|]+") do
+        for i = 1, select("#", ...) do
+            if tostring(select(i, ...)):lower():match(pattern) then
+                return true
+            end
+        end
+    end
+
+    return false
+end
 
 local function tostringall(x, ...)
     if select('#', ...) > 0 then return tostring(x), tostringall(...)
@@ -81,7 +101,7 @@ printf = printf or function(...) DEFAULT_CHAT_FRAME:AddMessage(format(...)) end
 
 function Incident:OnEvent(event, ...)
     if suspend then return end
-    if filter and not strjoin("\007", tostringall(event, ...)):lower():match(filter) then return end
+    if filter and not multimatch(filter, event, ...) then return end
     self:Dump(event, ...)
     if capture then tinsert(capture, strjoin("\007", tostringall(time() + GetTime() % 1, event, ...))) end
     if self[event] then self[event](self, ...) end
@@ -91,7 +111,7 @@ function Incident:ADDON_LOADED()
     self:UnregisterEvent("ADDON_LOADED")
     IncDB = IncDB or {}
     self:SetScript("OnEvent", self.OnEvent)
-    self:Print("Version %s loaded." , Incident.version)
+    self:Print("Version %s loaded.", Incident.version)
 end
 
 Incident:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
