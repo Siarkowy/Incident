@@ -44,7 +44,7 @@ function Incident:OnSlashCmd(msg)
         self:Print("Capture stopped.")
 
     elseif cmd == "" or cmd == "help" then
-        self:Print("Usage: /! { +<event> || +<event>$ fn $ || -<event> || +all || -all || filter <string> || output <no> || toggle }")
+        self:Print("Usage: /! { +<event> || +<event>$ fn $ || -<event> || +all || -all || filter <string> || output <no> || start <name> || stop || toggle }")
         self:Echo("   +<event> - Registers <event>.")
         self:Echo("   +<event>$ body $ - Registers <event> with handler function. " ..
             "The handler will have predefined locals: self (=Incident), _ (=dummy) and A, B, C through Z, which stand for consecutive event parameters.")
@@ -53,6 +53,8 @@ function Incident:OnSlashCmd(msg)
         self:Echo("   -all - Unregisters all events.")
         self:Echo("   filter <string> - Sets filter to <string>.")
         self:Echo("   output <no> - Sets output to ChatFrame<no>.")
+        self:Echo("   start <name> - Starts event capture with optional <name>.")
+        self:Echo("   stop - Stops event capture.")
         self:Echo("   toggle - Toggles suspend mode on or off.")
 
     else

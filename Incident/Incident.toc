@@ -2,7 +2,7 @@
 ## Title: Incident
 ## Notes: Compact event dumper. Usage: /!
 ## Author: Siarkowy
-## Version: 0.8
+## Version: 0.9
 ## SavedVariables: IncDB
 
 core.lua
