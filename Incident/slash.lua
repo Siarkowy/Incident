@@ -10,6 +10,7 @@ local abbrevs = {
 }
 
 function Incident:OnSlashCmd(msg)
+    msg = msg:gsub("[A-Z_]+", abbrevs)
     local cmd, param = msg:lower():match("(%S*)%s*(.*)")
 
     if cmd == "+all" then
@@ -43,8 +44,10 @@ function Incident:OnSlashCmd(msg)
         self:Print("Capture stopped.")
 
     elseif cmd == "" or cmd == "help" then
-        self:Print("Usage: /! { +<event> || -<event> || +all || -all || filter <string> || output <no> || toggle }")
+        self:Print("Usage: /! { +<event> || +<event>$ fn $ || -<event> || +all || -all || filter <string> || output <no> || toggle }")
         self:Echo("   +<event> - Registers <event>.")
+        self:Echo("   +<event>$ body $ - Registers <event> with handler function. " ..
+            "The handler will have predefined locals: self (=Incident), _ (=dummy) and A, B, C through Z, which stand for consecutive event parameters.")
         self:Echo("   -<event> - Unregisters <event>.")
         self:Echo("   +all - Registers all events.")
         self:Echo("   -all - Unregisters all events.")
@@ -53,12 +56,21 @@ function Incident:OnSlashCmd(msg)
         self:Echo("   toggle - Toggles suspend mode on or off.")
 
     else
-        local msg = msg:upper():gsub("[A-Z_]+", abbrevs)
+        for event, fn, err in msg:gmatch("%+([A-Z_]+)(%b$$)") do
+            fn = fn:sub(2, -2) -- get rid of $
+            fn = format("local self,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,_ = ... %s", fn)
+            fn, err = loadstring(fn)
+            self.events[event] = fn
 
-        for op, event in msg:gmatch("(.)([A-Z_]+)") do
-            if op == "+" then self:RegisterEvent(event)
+            self:Print(fn and "Handler for %s assigned successfully."
+                or "Error in %s handler: %s", event, err)
+        end
+
+        for action, event in msg:gmatch("([+-])([A-Z_]+)") do
+            if action == "+" then self:RegisterEvent(event)
             else self:UnregisterEvent(event) end
-            self:Print("%s %s.", event, op == "+" and "registered" or "unregistered")
+
+            self:Print("%s %s.", event, action == "+" and "registered" or "unregistered")
         end
     end
 end

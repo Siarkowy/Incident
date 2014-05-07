@@ -7,6 +7,7 @@ local Incident = CreateFrame("frame", "Incident")
 Incident.name = "Incident"
 Incident.author = GetAddOnMetadata("Incident", "Author")
 Incident.version = GetAddOnMetadata("Incident", "Version")
+Incident.events = {}
 
 local byte = string.byte
 local format = format
@@ -20,6 +21,7 @@ local unpack = unpack
 
 local capture
 local captures      = { }
+local events        = Incident.events
 local filter
 local output        = ChatFrame3
 local params        = { }
@@ -55,6 +57,7 @@ end
 
 Incident.tostringall = tostringall
 
+local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
 function Incident:Print(...) DEFAULT_CHAT_FRAME:AddMessage("|cFF56A3FFIncident:|r " .. format(...)) end
 function Incident:Echo(...) DEFAULT_CHAT_FRAME:AddMessage(format(...)) end
 function Incident:Filter(val) filter = val end
@@ -71,7 +74,7 @@ function Incident:StopCapture()
     capture = nil
 end
 
-function Incident:Dump(...)
+function Incident:Dump(output, ...)
     for i = 1, select("#", ...) do
         local val = select(i, ...)
         local t = type(val)
@@ -95,16 +98,17 @@ function Incident:Dump(...)
 end
 
 -- shortcut utility functions
-dump   = dump   or function(...) Incident:Dump(...) end
+dump   = dump   or function(...) Incident:Dump(DEFAULT_CHAT_FRAME, ...) end
+dumpf  = dumpf  or function(n, ...) Incident:Dump(_G["ChatFrame" .. n], ...) end
 print  = print  or function(...) DEFAULT_CHAT_FRAME:AddMessage(...) end
 printf = printf or function(...) DEFAULT_CHAT_FRAME:AddMessage(format(...)) end
 
 function Incident:OnEvent(event, ...)
     if suspend then return end
     if filter and not multimatch(filter, event, ...) then return end
-    self:Dump(event, ...)
+    self:Dump(output, event, ...)
     if capture then tinsert(capture, strjoin("\007", tostringall(time() + GetTime() % 1, event, ...))) end
-    if self[event] then self[event](self, ...) end
+    if events[event] then events[event](self, ...) end
 end
 
 function Incident:ADDON_LOADED()
