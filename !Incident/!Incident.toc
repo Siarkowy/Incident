@@ -4,6 +4,7 @@
 ## Author: Siarkowy
 ## Version: 1.0
 ## SavedVariables: IncDB
+## OptionalDeps: !Swatter
 
 core.lua
 slash.lua

@@ -5,8 +5,8 @@
 
 local Incident = CreateFrame("frame", "Incident")
 Incident.name = "Incident"
-Incident.author = GetAddOnMetadata("Incident", "Author")
-Incident.version = GetAddOnMetadata("Incident", "Version")
+Incident.author = GetAddOnMetadata("!Incident", "Author")
+Incident.version = GetAddOnMetadata("!Incident", "Version")
 Incident.events = {}
 
 local byte = string.byte
