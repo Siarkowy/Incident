@@ -1,8 +1,8 @@
 ## Interface: 20400
 ## Title: Incident
-## Notes: Compact event dumper. Usage: /!
+## Notes: Compact event dumper by Siarkowy. Usage: /!
 ## Author: Siarkowy
-## Version: 0.9
+## Version: 1.0
 ## SavedVariables: IncDB
 
 core.lua
