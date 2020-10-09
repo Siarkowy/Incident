@@ -27,7 +27,15 @@ function Incident:OnSlashCmd(msg)
         self:Print(val and "Filter set to %q." or "Filter disabled.", val)
 
     elseif cmd == "output" then
-        local name = "ChatFrame" .. (tonumber(param) or 1)
+        param = (tonumber(param) or 1)
+
+        if param == 0 then
+            self:SetOutput(nil)
+            self:Print("Output disabled (quiet mode).")
+            return
+        end
+
+        local name = "ChatFrame" .. param
         local frame = _G[name] or ChatFrame1
         self:SetOutput(frame)
         self:Print("Output set to %s.", frame:GetName() or "<unnamed>")
@@ -63,7 +71,7 @@ function Incident:OnSlashCmd(msg)
         self:Echo("   +all - Registers all events.")
         self:Echo("   -all - Unregisters all events.")
         self:Echo("   filter <string> - Sets filter to <string>.")
-        self:Echo("   output <no> - Sets output to ChatFrame<no>.")
+        self:Echo("   output <no> - Sets output to ChatFrame<no>. 0 for quiet mode.")
         self:Echo("   start <name> - Starts event capture with optional <name>.")
         self:Echo("   stop - Stops event capture.")
         self:Echo("   toggle - Toggles suspend mode on or off.")

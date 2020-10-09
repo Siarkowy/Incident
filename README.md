@@ -14,7 +14,7 @@ Syntax
     +all                Registers all events.
     -all                Unregisters all events.
     filter <string>     Sets filter to <string>.
-    output <no>         Sets output to ChatFrame<no>.
+    output <no>         Sets output to ChatFrame<no>. 0 for quiet mode.
     start <name>        Starts event capture with optional <name>.
     stop                Stops event capture.
     toggle              Toggles suspend mode on or off.

@@ -96,6 +96,8 @@ function Incident:PurgeCaptures()
 end
 
 function Incident:Dump(output, ...)
+    if not output then return end
+
     for i = 1, select("#", ...) do
         local val = select(i, ...)
         local t = type(val)
