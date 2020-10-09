@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
--- Inc!dent (c) 2012-2013 by Siarkowy
--- Released under the terms of GNU GPL v3 license.
+-- Inc!dent (c) 2012, 2020 by Siarkowy
+-- Released under the terms of BSD 3-Clause "New" license (see LICENSE file).
 --------------------------------------------------------------------------------
 
 local Incident = CreateFrame("frame", "Incident")

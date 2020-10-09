@@ -1,3 +1,8 @@
+--------------------------------------------------------------------------------
+-- Inc!dent (c) 2012, 2020 by Siarkowy
+-- Released under the terms of BSD 3-Clause "New" license (see LICENSE file).
+--------------------------------------------------------------------------------
+
 local Incident = Incident
 
 local abbrevs = {
