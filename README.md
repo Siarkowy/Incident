@@ -24,12 +24,16 @@ Compact event dumper. Usage: `/!` [Wow 2.4.3]
 
 ## Handler function `fn`
 
-The handler will have predefined locals:
+Event registration in form of `/! +<event>$ fn $` allows you to bind short
+snippets of code that run when a specific event occurs in-game.
 
-- `self` — Incident,
-- `_` — dummy variable,
-- `A, B, C` through `Z` — consecutive event parameters.
+The following predefined locals are available in the event handler:
 
+```
+    self                Incident object itself.
+    _                   Dummy variable.
+    A ... Z             Consecutive event parameters.
+```
 
 ## Installation
 
