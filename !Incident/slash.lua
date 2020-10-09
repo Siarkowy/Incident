@@ -36,8 +36,8 @@ function Incident:OnSlashCmd(msg)
         self:Print(self:ToggleSuspend() and "Suspended." or "Enabled.")
 
     elseif cmd == "start" then
-        self:StartCapture(param ~= "" and param)
-        self:Print("Capture started.")
+        local name = self:StartCapture(param ~= "" and param)
+        self:Print("Capture %q started.", name)
 
     elseif cmd == "stop" then
         self:StopCapture()

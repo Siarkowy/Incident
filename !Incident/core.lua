@@ -10,14 +10,17 @@ Incident.version = GetAddOnMetadata("!Incident", "Version")
 Incident.events = {}
 
 local byte = string.byte
-local format = format
+local date = date
+local format = string.format
 local pairs = pairs
 local select = select
 local time = time
-local tinsert = tinsert
+local tinsert = table.insert
 local tostring = tostring
 local type = type
 local unpack = unpack
+
+local GetRealZoneText = GetRealZoneText
 
 local capture
 local captures      = { }
@@ -65,9 +68,13 @@ function Incident:SetOutput(frame) output = frame end
 function Incident:ToggleSuspend() suspend = not suspend return suspend end
 
 function Incident:StartCapture(name)
-    local name = name ~= "" and name or date("%x %X")
+    local name = name ~= "" and name
+    if not name then
+        name = format("%s %s", date("%Y-%m-%d %H:%M:%S"), GetRealZoneText())
+    end
     IncDB[name] = IncDB[name] or { }
     capture = IncDB[name]
+    return name
 end
 
 function Incident:StopCapture()
