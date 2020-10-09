@@ -78,7 +78,9 @@ function Incident:StartCapture(name)
 end
 
 function Incident:StopCapture()
+    local wasActive = not not capture
     capture = nil
+    return wasActive
 end
 
 function Incident:Dump(output, ...)

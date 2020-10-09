@@ -40,8 +40,9 @@ function Incident:OnSlashCmd(msg)
         self:Print("Capture %q started.", name)
 
     elseif cmd == "stop" then
-        self:StopCapture()
-        self:Print("Capture stopped.")
+        if self:StopCapture() then
+            self:Print("Capture stopped.")
+        end
 
     elseif cmd == "" or cmd == "help" then
         self:Print("Usage: /! { +<event> || +<event>$ fn $ || -<event> || +all || -all || filter <string> || output <no> || start <name> || stop || toggle }")
