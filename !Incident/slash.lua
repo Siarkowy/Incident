@@ -55,7 +55,9 @@ function Incident:OnSlashCmd(msg)
     elseif cmd == "list" then
         self:Print("Saved captures:")
         for name, capture in pairs(IncDB) do
-            self:Print(" - %s - %d event(s)", name, #capture)
+            if type(capture) == 'table' then
+                self:Print(" - %s - %d event(s)", name, #capture)
+            end
         end
 
     elseif cmd == "purge" then

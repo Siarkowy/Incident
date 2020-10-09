@@ -30,6 +30,9 @@ local output        = ChatFrame3
 local params        = { }
 local suspend
 
+local DB_VERSION = 10100
+local FIELD_DELIM = "\007"
+
 local formats = {
     ["boolean"]     = "|cFFFF9100%s|r",
     ["function"]    = "|cFFFFA500%s|r",
@@ -87,9 +90,11 @@ function Incident:PurgeCaptures()
     self:StopCapture()
 
     local num = 0
-    for k, _ in pairs(IncDB) do
-        IncDB[k] = nil
-        num = num + 1
+    for k, v in pairs(IncDB) do
+        if type(v) == 'table' then
+            IncDB[k] = nil
+            num = num + 1
+        end
     end
 
     return num
@@ -130,13 +135,18 @@ function Incident:OnEvent(event, ...)
     if suspend then return end
     if filter and not multimatch(filter, event, ...) then return end
     self:Dump(output, event, ...)
-    if capture then tinsert(capture, strjoin("\007", tostringall(time() + GetTime() % 1, event, ...))) end
+    if capture then tinsert(capture, strjoin(FIELD_DELIM, tostringall(time() + GetTime() % 1, event, ...))) end
     if events[event] then events[event](self, ...) end
 end
 
 function Incident:ADDON_LOADED()
     self:UnregisterEvent("ADDON_LOADED")
-    IncDB = IncDB or {}
+    if not IncDB or (tonumber(IncDB._version) or 0) < DB_VERSION then
+        IncDB = {
+            _version = DB_VERSION,
+        }
+        self:Print("Internal database reset.")
+    end
     self:SetScript("OnEvent", self.OnEvent)
     self:Print("Version %s loaded.", Incident.version)
 end
