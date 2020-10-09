@@ -83,6 +83,18 @@ function Incident:StopCapture()
     return wasActive
 end
 
+function Incident:PurgeCaptures()
+    self:StopCapture()
+
+    local num = 0
+    for k, _ in pairs(IncDB) do
+        IncDB[k] = nil
+        num = num + 1
+    end
+
+    return num
+end
+
 function Incident:Dump(output, ...)
     for i = 1, select("#", ...) do
         local val = select(i, ...)

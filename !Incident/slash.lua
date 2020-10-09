@@ -44,8 +44,18 @@ function Incident:OnSlashCmd(msg)
             self:Print("Capture stopped.")
         end
 
+    elseif cmd == "list" then
+        self:Print("Saved captures:")
+        for name, capture in pairs(IncDB) do
+            self:Print(" - %s - %d event(s)", name, #capture)
+        end
+
+    elseif cmd == "purge" then
+        local num = self:PurgeCaptures()
+        self:Print("%d capture(s) purged.", num)
+
     elseif cmd == "" or cmd == "help" then
-        self:Print("Usage: /! { +<event> || +<event>$ fn $ || -<event> || +all || -all || filter <string> || output <no> || start <name> || stop || toggle }")
+        self:Print("Usage: /! { +<event> || +<event>$ fn $ || -<event> || +all || -all || filter <string> || output <no> || start <name> || stop || toggle || list || purge }")
         self:Echo("   +<event> - Registers <event>.")
         self:Echo("   +<event>$ body $ - Registers <event> with handler function. " ..
             "The handler will have predefined locals: self (=Incident), _ (=dummy) and A, B, C through Z, which stand for consecutive event parameters.")
@@ -57,6 +67,8 @@ function Incident:OnSlashCmd(msg)
         self:Echo("   start <name> - Starts event capture with optional <name>.")
         self:Echo("   stop - Stops event capture.")
         self:Echo("   toggle - Toggles suspend mode on or off.")
+        self:Echo("   list - List saved captures.")
+        self:Echo("   purge - Drop all saved event captures.")
 
     else
         for event, fn, err in msg:gmatch("%+([A-Z_]+)(%b$$)") do

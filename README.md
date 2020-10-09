@@ -18,6 +18,8 @@ Syntax
     start <name>        Starts event capture with optional <name>.
     stop                Stops event capture.
     toggle              Toggles suspend mode on or off.
+    list                List saved captures.
+    purge               Drop all saved event captures.
 ```
 
 Handler function `fn`
