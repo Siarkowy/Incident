@@ -1,10 +1,9 @@
-Incident
-========
+# Incident
 
 Compact event dumper. Usage: `/!` [Wow 2.4.3]
 
-Syntax
-------
+
+## Synopsis
 
 ```
 /!
@@ -22,11 +21,19 @@ Syntax
     purge               Drop all saved event captures.
 ```
 
-Handler function `fn`
----------------------
+
+## Handler function `fn`
 
 The handler will have predefined locals:
 
 - `self` — Incident,
 - `_` — dummy variable,
 - `A, B, C` through `Z` — consecutive event parameters.
+
+
+## Installation
+
+- Find the latest [release](https://github.com/SiarkowyDevKit/Incident/releases),
+  download ZIP file from assets below & open the archive.
+- Extract all folders from `Incident-<version>\` into your `Interface\AddOns\`.
+- Restart WoW client & confirm the addon(s) are shown in character login screen.
